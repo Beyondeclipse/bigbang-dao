@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.bigbang</groupId>
+    <artifactId>bigbang-dao</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <repositories>
+        <repository>
+            <id>bigbangbug</id>
+            <name>BigBangBug Central Repo</name>
+            <url>http://192.168.100.198:8081/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>bigbangbug</id>
+            <name>BigBangBug Central Repo</name>
+            <url>http://192.168.100.198:8081/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    <distributionManagement>
+        <!-- Publish the versioned releases here -->
+        <repository>
+            <id>bigbangbug</id>
+            <name>BigBangBug Central Repo</name>
+            <url>http://192.168.100.198:8081/nexus/content/repositories/releases/</url>
+        </repository>
+
+        <!-- Publish the versioned snapshoots here -->
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>BigBangBug snapshots</name>
+            <url>http://192.168.100.198:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <maven.version.range>[3.0.4,)</maven.version.range>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.locale>zh_CN</project.build.locale>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
+        <maven-assembly-plugin.version>2.6</maven-assembly-plugin.version>
+        <maven-resources-plugin.version>3.0.1</maven-resources-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+        <maven-site-plugin.version>3.5.1</maven-site-plugin.version>
+        <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
+        <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
+        <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
+        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+        <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
+        <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
+        <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
+        <maven-pmd-plugin.version>3.7</maven-pmd-plugin.version>
+        <jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
+        <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <java.version>1.8</java.version>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <jacoco.basedir>${project.build.directory}/code-coverage</jacoco.basedir>
+        <jacoco.ut.outputdir>${jacoco.basedir}/jacoco-ut-out</jacoco.ut.outputdir>
+        <surefire.argline>-Xmx1024m</surefire.argline>
+
+        <disruptor.version>3.4.2</disruptor.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.5.1</version>
+                    <executions>
+                        <execution>
+                            <id>default-deploy</id>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>deploy</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <serverId>VIP-nexus</serverId>
+                        <nexusUrl>http://mvn1.tools.vipshop.com/nexus/</nexusUrl>
+                        <skipStaging>true</skipStaging>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>get-local-ip</id>
+                            <goals>
+                                <goal>local-ip</goal>
+                            </goals>
+                            <configuration>
+                                <!-- if not given, 'local.ip' name is used -->
+                                <localIpProperty>build.host.ip</localIpProperty>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <pstask-build-tag>build@${maven.build.timestamp} by ${user.name}</pstask-build-tag>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.3.0.603</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <!--<profiles>-->
+    <!--<profile>-->
+    <!--<id>sonar</id>-->
+    <!--<activation>-->
+    <!--<activeByDefault>true</activeByDefault>-->
+    <!--</activation>-->
+    <!--<properties>-->
+    <!--&lt;!&ndash; Optional URL to server. Default value is http://localhost:9000 &ndash;&gt;-->
+    <!--<sonar.host.url>http://10.199.198.6</sonar.host.url>-->
+    <!--</properties>-->
+    <!--</profile>-->
+    <!--</profiles>-->
+
+    <modules>
+        <module>bigbang-dao-core</module>
+        <module>bigbang-dao-domain</module>
+        <module>bigbang-dao-utils</module>
+        <module>bigbang-dao-test</module>
+    </modules>
+
+</project>
